@@ -23,13 +23,25 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {HorizontalCard, RoundedView} from './Comps';
 
 const App: () => React$Node = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <ScrollView
+        <View style={{flexDirection: 'row'}}>
+        <HorizontalCard />
+        <HorizontalCard />
+        </View>
+        
+        {/* <View> */}
+        <View style={{flexDirection: 'row'}}>
+          <RoundedView />
+          <RoundedView />
+        </View>
+        {/* </View> */}
+        {/* <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
           <Header />
@@ -66,7 +78,7 @@ const App: () => React$Node = () => {
             </View>
             <LearnMoreLinks />
           </View>
-        </ScrollView>
+        </ScrollView> */}
       </SafeAreaView>
     </>
   );

@@ -15,4 +15,6 @@ export default {
   games: require('./Images/games.jpg'),
   gadjets: require('./Images/gadgets.jpg'),
   bicycle: require('./Images/bicycle.jpg'),
+  hamburger: require('./Images/hamburger.png'),
+  notif: require('./Images/notification.png'),
 };

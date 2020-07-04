@@ -6,9 +6,13 @@ import {
   Image,
   StyleSheet,
   Dimensions,
+  TouchableOpacity,
+  TextInput,
+  TextInputComponent,
 } from 'react-native';
 import Images from './Assets/imagePath';
 const {width} = Dimensions.get('window');
+const circleSize = (width - (12 + 5 * 24)) / 5;
 
 /**
  * Horizontal Card
@@ -16,25 +20,27 @@ const {width} = Dimensions.get('window');
  * @description Horizontal Card Component with image as background.
  * Texts are wrapped inside Views to wrap text content incase string is very long
  */
-export function HorizontalCard(props) {
+export function HorizontalCard({item}) {
   return (
-    <ImageBackground
-      imageStyle={styles.horizontalImageStyle}
-      source={Images.kid}
-      style={styles.horizontalCard}>
-      <View style={styles.cardTextView}>
-        <View style={styles.titleTextView}>
-          <Text numberOfLines={1} style={styles.titleText}>
-            HorizontalCardhjjhjhghhhjhjjh
-          </Text>
+    <TouchableOpacity>
+      <ImageBackground
+        imageStyle={styles.horizontalImageStyle}
+        source={item.image}
+        style={styles.horizontalCard}>
+        <View style={styles.cardTextView}>
+          <View style={styles.titleTextView}>
+            <Text numberOfLines={1} style={styles.titleText}>
+              {item.cardName}
+            </Text>
+          </View>
+          <View style={styles.priceTextView}>
+            <Text numberOfLines={1} style={styles.priceText}>
+              {item.price}
+            </Text>
+          </View>
         </View>
-        <View style={styles.priceTextView}>
-          <Text numberOfLines={1} style={styles.priceText}>
-            $19h6767
-          </Text>
-        </View>
-      </View>
-    </ImageBackground>
+      </ImageBackground>
+    </TouchableOpacity>
   );
 }
 
@@ -44,18 +50,18 @@ export function HorizontalCard(props) {
  * @description Rounded Card Component with icon and category text
  * Text is wrapped inside Views to wrap text content incase string is very long
  */
-export function RoundedView(props) {
+export function RoundedView({item}) {
   return (
-    <View style={styles.roundedCard}>
+    <TouchableOpacity style={styles.roundedCard}>
       <View style={styles.roundedView}>
-        <Image style={styles.roundedimage} source={Images.food} />
+        <Image style={styles.roundedimage} source={item.image} />
       </View>
       <View style={styles.roundedCardTextView}>
         <Text numberOfLines={1} style={styles.roundedCategoryText}>
-          Food
+          {item.categoryName}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -65,20 +71,19 @@ export function RoundedView(props) {
  * @description Featured Card Component with Image, name, location, review and ratings
  * Text is wrapped inside Views to wrap text content incase string is very long
  */
-export function FeaturedCard(props) {
-  const rating = 4;
+export function FeaturedCard({item}) {
+  const {title, distance, image, reviews, rating} = item;
+  const locationAndReview = `${distance} Away (${reviews} reviews)`;
   return (
-    <View style={styles.featuredCard}>
-      <Image source={Images.foodimage} style={styles.featuredCardImage} />
+    <TouchableOpacity style={styles.featuredCard}>
+      <Image source={image} style={styles.featuredCardImage} />
       <View style={styles.featuredCardInnerView}>
         <View style={styles.featuredCardNameView}>
-          <Text style={styles.featuredCardNameText}>Amrit Sweets</Text>
+          <Text style={styles.featuredCardNameText}>{title}</Text>
         </View>
         <View style={styles.locationAndReviewView}>
           <Image source={Images.location} style={styles.locationImage} />
-          <Text style={styles.locationAndReviewText}>
-            2Km Away(562 Reviews)
-          </Text>
+          <Text style={styles.locationAndReviewText}>{locationAndReview}</Text>
         </View>
         <View style={styles.starsContainerView}>
           {Array(5)
@@ -86,32 +91,62 @@ export function FeaturedCard(props) {
             .map((item, index) => {
               const imageSource =
                 index <= rating - 1 ? Images.selectedStar : Images.star;
-              return <Image source={imageSource} style={styles.starImage} />;
+              return (
+                <Image
+                  key={item + index}
+                  source={imageSource}
+                  style={styles.starImage}
+                />
+              );
             })}
         </View>
       </View>
+    </TouchableOpacity>
+  );
+}
+
+/**
+ * Header
+ * @author Himanshu Yadav
+ * @description Header Component with drawer navigation, search and notifIcon
+ * Text is wrapped inside Views to wrap text content incase string is very long
+ */
+export function Header({item}) {
+  return (
+    <View style={styles.headerView}>
+      <Image
+        source={Images.hamburger}
+        style={styles.hamburgerImage}
+        resizeMode="contain"
+      />
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search By Name/Rating"
+      />
+      <Image source={Images.notif} style={styles.notifImage} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  //Card Container Styles
   horizontalCard: {
-    height: 135,
+    height: 150,
     width: 250,
-    marginHorizontal: 7,
+    marginHorizontal: 6,
     paddingHorizontal: 15,
     paddingBottom: 5,
     justifyContent: 'flex-end',
   },
   roundedCard: {
-    width: 70,
     alignItems: 'center',
     marginHorizontal: 12,
   },
   featuredCard: {
-    width: (width - 40) / 2,
+    width: (width - 52) / 2,
     paddingBottom: 15,
     marginHorizontal: 8,
+    marginBottom: 20,
     backgroundColor: 'white',
     shadowColor: 'black',
     shadowOffset: {
@@ -122,16 +157,26 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     elevation: 5,
   },
+  //Image Styles
+  notifImage: {
+    height: 25,
+    width: 25,
+  },
+  hamburgerImage: {
+    height: 25,
+    width: 25,
+  },
   featuredCardImage: {
     height: 200,
-    width: (width - 40) / 2,
+    width: (width - 52) / 2,
   },
   horizontalImageStyle: {
+    height: 150,
     borderRadius: 15,
   },
   roundedimage: {
-    height: 35,
-    width: 35,
+    height: circleSize / 2,
+    width: circleSize / 2,
   },
   locationImage: {
     height: 14,
@@ -142,6 +187,13 @@ const styles = StyleSheet.create({
     height: 12,
     width: 12,
     marginRight: 2,
+  },
+  // View styles
+  headerView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 18,
+    marginBottom: 25,
   },
   starsContainerView: {
     marginTop: 5,
@@ -163,9 +215,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    height: 70,
-    width: 70,
-    borderRadius: 35,
+    height: circleSize,
+    width: circleSize,
+    borderRadius: circleSize / 2,
     shadowColor: 'black',
     shadowOffset: {
       width: 0,
@@ -184,22 +236,30 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   titleTextView: {
-    flex: 0.75,
+    flex: 0.7,
     flexShrink: 1,
   },
   priceTextView: {
     marginLeft: 10,
     alignItems: 'flex-end',
-    flex: 0.25,
+    flex: 0.3,
     flexShrink: 1,
   },
+  //Text styles
+  searchInput: {
+    padding: 12,
+    marginHorizontal: 15,
+    borderRadius: 20,
+    flex: 1,
+    backgroundColor: '#e8e8e8',
+  },
   titleText: {
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: '600',
     color: 'white',
   },
   priceText: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',

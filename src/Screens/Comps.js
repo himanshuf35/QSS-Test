@@ -10,7 +10,7 @@ import {
   TextInput,
   TextInputComponent,
 } from 'react-native';
-import Images from './Assets/imagePath';
+import Images from '../Assets/imagePath';
 const {width} = Dimensions.get('window');
 const circleSize = (width - (12 + 5 * 24)) / 5;
 

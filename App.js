@@ -15,59 +15,36 @@ import {
   View,
   StatusBar,
 } from 'react-native';
-import {HorizontalCard, RoundedView, FeaturedCard, Header} from './Comps';
-import data from './data';
+import {NavigationContainer} from '@react-navigation/native';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+
+import Home from './src/Screens/Home';
+
+// const Drawer = createDrawerNavigator();
+
+// function MyDrawer() {
+//   return (
+//     <Drawer.Navigator>
+//       {/* <Drawer.Screen name="Feed" component={Feed} />
+//       <Drawer.Screen name="Article" component={Article} /> */}
+//     </Drawer.Navigator>
+//   );
+// }
 
 const App: () => React$Node = () => {
-  const {horizontalData, categoriesData, featuredData} = data;
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <Header />
-        <ScrollView
-          style={{marginBottom: 50}}
-          showsVerticalScrollIndicator={false}>
-          <FlatList
-            contentContainerStyle={styles.horizontalCardsContainer}
-            data={horizontalData}
-            showsHorizontalScrollIndicator={false}
-            horizontal
-            renderItem={({item}) => <HorizontalCard item={item} />}
-            keyExtractor={(item, index) => {
-              return item + index;
-            }}
-          />
-          <View style={styles.categoriesContainer}>
-            {categoriesData.map((item, index) => (
-              <RoundedView key={item + index} item={item} />
-            ))}
-          </View>
-          <View style={styles.featuredCardsContainer}>
-            {featuredData.map((item, index) => (
-              <FeaturedCard key={item + index} item={item} />
-            ))}
-          </View>
-        </ScrollView>
+      <SafeAreaView style={styles.container}>
+        <Home />
       </SafeAreaView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  horizontalCardsContainer: {
-    paddingHorizontal: 12,
-  },
-  categoriesContainer: {
-    flexDirection: 'row',
-    marginTop: 25,
-    marginBottom: 30,
-    paddingHorizontal: 6,
-  },
-  featuredCardsContainer: {
-    marginHorizontal: 10,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  container: {
+    flex: 1,
   },
 });
 

@@ -110,7 +110,11 @@ export function FeaturedCard({item}) {
  * @description Header Component with drawer navigation, search and notifIcon
  * Text is wrapped inside Views to wrap text content incase string is very long
  */
-export function Header({onHamburgerPress = () => {}, onNotifPress = () => {}}) {
+export function Header({
+  onHamburgerPress = () => {},
+  onNotifPress = () => {},
+  onChangeText = () => {},
+}) {
   return (
     <View style={styles.headerView}>
       <TouchableOpacity onPress={onHamburgerPress}>
@@ -121,6 +125,7 @@ export function Header({onHamburgerPress = () => {}, onNotifPress = () => {}}) {
         />
       </TouchableOpacity>
       <TextInput
+        onChangeText={onChangeText}
         style={styles.searchInput}
         placeholder="Search By Name/Rating"
       />

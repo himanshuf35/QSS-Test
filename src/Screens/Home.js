@@ -1,18 +1,33 @@
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  FlatList,
-  View,
-} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, ScrollView, FlatList, View} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {HorizontalCard, RoundedView, FeaturedCard, Header} from './Comps';
 import data from '../data';
-const Drawer = createDrawerNavigator();
 
 const Home = ({navigation}) => {
   const {horizontalData, categoriesData, featuredData} = data;
+  const [filteredData, setFilteredData] = useState(featuredData);
+  const onChangeText = (text) => {
+    const changedData = featuredData.filter((obj) => {
+      text = text.trim().toLowerCase();
+      const toSearchText = obj.title.toLowerCase();
+      // Check if the length of text and input is numeric then search in rating
+      if (text.length === 1 && !isNaN(parseInt(text))) {
+        return obj.rating.toString() === text;
+      } else {
+        //Here we are searching on basis of name with the beginning
+        const endPoint = Math.min(toSearchText.length, text.length);
+        const queryString = toSearchText.substring(0, endPoint);
+        // If length of text is greater than two and if we can't find match using substring
+        // then we can check in between strings to search for keywords i.e Tourism in Malik Tourism
+        return (
+          text === queryString ||
+          (text.length > 2 && toSearchText.includes(text))
+        );
+      }
+    });
+    setFilteredData(changedData);
+  };
   const onHamburgerPress = () => {
     navigation.openDrawer();
   };
@@ -21,7 +36,11 @@ const Home = ({navigation}) => {
   };
   return (
     <View style={styles.mainView}>
-      <Header onHamburgerPress={onHamburgerPress} onNotifPress={onNotifPress} />
+      <Header
+        onChangeText={onChangeText}
+        onHamburgerPress={onHamburgerPress}
+        onNotifPress={onNotifPress}
+      />
       <ScrollView showsVerticalScrollIndicator={false}>
         <FlatList
           contentContainerStyle={styles.horizontalCardsContainer}
@@ -44,7 +63,7 @@ const Home = ({navigation}) => {
           }}
         />
         <View style={styles.featuredCardsContainer}>
-          {featuredData.map((item, index) => (
+          {filteredData.map((item, index) => (
             <FeaturedCard key={item + index} item={item} />
           ))}
         </View>

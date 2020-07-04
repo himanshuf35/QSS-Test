@@ -23,7 +23,7 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {HorizontalCard, RoundedView} from './Comps';
+import {HorizontalCard, RoundedView, FeaturedCard} from './Comps';
 
 const App: () => React$Node = () => {
   return (
@@ -39,6 +39,10 @@ const App: () => React$Node = () => {
         <View style={{flexDirection: 'row'}}>
           <RoundedView />
           <RoundedView />
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <FeaturedCard />
+          <FeaturedCard />
         </View>
         {/* </View> */}
         {/* <ScrollView

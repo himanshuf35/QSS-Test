@@ -8,7 +8,6 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
-  TextInputComponent,
 } from 'react-native';
 import Images from '../Assets/imagePath';
 const {width} = Dimensions.get('window');
@@ -111,19 +110,23 @@ export function FeaturedCard({item}) {
  * @description Header Component with drawer navigation, search and notifIcon
  * Text is wrapped inside Views to wrap text content incase string is very long
  */
-export function Header({item}) {
+export function Header({onHamburgerPress = () => {}, onNotifPress = () => {}}) {
   return (
     <View style={styles.headerView}>
-      <Image
-        source={Images.hamburger}
-        style={styles.hamburgerImage}
-        resizeMode="contain"
-      />
+      <TouchableOpacity onPress={onHamburgerPress}>
+        <Image
+          source={Images.hamburger}
+          style={styles.hamburgerImage}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
       <TextInput
         style={styles.searchInput}
         placeholder="Search By Name/Rating"
       />
-      <Image source={Images.notif} style={styles.notifImage} />
+      <TouchableOpacity onPress={onNotifPress}>
+        <Image source={Images.notif} style={styles.notifImage} />
+      </TouchableOpacity>
     </View>
   );
 }

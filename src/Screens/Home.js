@@ -11,20 +11,17 @@ import {HorizontalCard, RoundedView, FeaturedCard, Header} from './Comps';
 import data from '../data';
 const Drawer = createDrawerNavigator();
 
-function MyDrawer() {
-  return (
-    <Drawer.Navigator>
-      {/* <Drawer.Screen name="Feed" component={Feed} />
-      <Drawer.Screen name="Article" component={Article} /> */}
-    </Drawer.Navigator>
-  );
-}
-
-const Home = () => {
+const Home = ({navigation}) => {
   const {horizontalData, categoriesData, featuredData} = data;
+  const onHamburgerPress = () => {
+    navigation.openDrawer();
+  };
+  const onNotifPress = () => {
+    navigation.navigate('Screen2');
+  };
   return (
     <View style={styles.mainView}>
-      <Header />
+      <Header onHamburgerPress={onHamburgerPress} onNotifPress={onNotifPress} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <FlatList
           contentContainerStyle={styles.horizontalCardsContainer}
@@ -36,11 +33,16 @@ const Home = () => {
             return item + index;
           }}
         />
-        <View style={styles.categoriesContainer}>
-          {categoriesData.map((item, index) => (
-            <RoundedView key={item + index} item={item} />
-          ))}
-        </View>
+        <FlatList
+          contentContainerStyle={styles.categoriesContainer}
+          data={categoriesData}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          renderItem={({item}) => <RoundedView item={item} />}
+          keyExtractor={(item, index) => {
+            return item + index;
+          }}
+        />
         <View style={styles.featuredCardsContainer}>
           {featuredData.map((item, index) => (
             <FeaturedCard key={item + index} item={item} />
@@ -54,6 +56,7 @@ const Home = () => {
 const styles = StyleSheet.create({
   mainView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   horizontalCardsContainer: {
     paddingHorizontal: 12,

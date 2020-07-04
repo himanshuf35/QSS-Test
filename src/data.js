@@ -13,6 +13,9 @@ const data = {
     {categoryName: 'Travel', image: Images.travel},
     {categoryName: 'Beauty', image: Images.beauty},
     {categoryName: 'Gifts', image: Images.gift},
+    {categoryName: 'Clothes', image: Images.clothes},
+    {categoryName: 'Travel', image: Images.travel},
+    {categoryName: 'Beauty', image: Images.beauty},
   ],
   featuredData: [
     {

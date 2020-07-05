@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {StyleSheet, ScrollView, FlatList, View} from 'react-native';
-import {createDrawerNavigator} from '@react-navigation/drawer';
 import {HorizontalCard, RoundedView, FeaturedCard, Header} from './Comps';
 import data from '../data';
 

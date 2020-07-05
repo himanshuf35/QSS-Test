@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
 import {
   SafeAreaView,
@@ -31,18 +23,18 @@ const goBack = (navigation) => {
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
-const Screen1 = getDummyScreen(
+const DrawerScreen = getDummyScreen(
   'Drawer Menu Screen',
   'ToggleDrawer',
   toggleDrawer,
 );
-const Screen2 = getDummyScreen('Notification Screen', 'Go Back', goBack);
+const NotifScreen = getDummyScreen('Notification Screen', 'Go Back', goBack);
 
 function TestStack() {
   return (
     <Stack.Navigator headerMode="none">
       <Stack.Screen name="DrawerNavigator" component={TestDrawer} />
-      <Stack.Screen name="Screen2" component={Screen2} />
+      <Stack.Screen name="Screen2" component={NotifScreen} />
     </Stack.Navigator>
   );
 }
@@ -51,7 +43,7 @@ function TestDrawer() {
   return (
     <Drawer.Navigator>
       <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="DrawerScreen" component={Screen1} />
+      <Drawer.Screen name="DrawerScreen" component={DrawerScreen} />
     </Drawer.Navigator>
   );
 }

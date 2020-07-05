@@ -3,9 +3,9 @@ import Images from './Assets/imagePath';
 const data = {
   horizontalData: [
     {cardName: 'Chocolate Cake', price: '$5', image: Images.choco},
-    {cardName: 'Drone', price: '$100', image: Images.gadjets},
+    {cardName: 'Drone', price: '$500', image: Images.gadjets},
     {cardName: 'Kids Dress', price: '$20', image: Images.kid},
-    {cardName: 'Bicycle', price: '$150', image: Images.bicycle},
+    {cardName: 'Bicycle', price: '$1000', image: Images.bicycle},
   ],
   categoriesData: [
     {categoryName: 'Food', image: Images.food},
@@ -54,10 +54,10 @@ const data = {
       rating: 4,
     },
     {
-      title: 'Kids Dress',
-      distance: '$20',
-      reviews: 562,
-      image: Images.kid,
+      title: 'Games Store',
+      distance: '5Km',
+      reviews: 2000,
+      image: Images.games,
       rating: 4,
     },
     {

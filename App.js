@@ -31,8 +31,12 @@ const goBack = (navigation) => {
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
-const Screen1 = getDummyScreen('Screen 1', 'ToggleDrawer', toggleDrawer);
-const Screen2 = getDummyScreen('Screen 2', 'Go Back', goBack);
+const Screen1 = getDummyScreen(
+  'Drawer Menu Screen',
+  'ToggleDrawer',
+  toggleDrawer,
+);
+const Screen2 = getDummyScreen('Notification Screen', 'Go Back', goBack);
 
 function TestStack() {
   return (

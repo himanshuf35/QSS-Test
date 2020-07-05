@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
+  Platform,
 } from 'react-native';
 import Images from '../Assets/imagePath';
 const {width} = Dimensions.get('window');
@@ -27,16 +28,17 @@ export function HorizontalCard({item}) {
         source={item.image}
         style={styles.horizontalCard}>
         <View style={styles.cardTextView}>
-          <View style={styles.titleTextView}>
-            <Text numberOfLines={1} style={styles.titleText}>
-              {item.cardName}
-            </Text>
-          </View>
-          <View style={styles.priceTextView}>
-            <Text numberOfLines={1} style={styles.priceText}>
-              {item.price}
-            </Text>
-          </View>
+          <TextWithWrapper
+            text={item.cardName}
+            flex={0.65}
+            textStyle={styles.titleText}
+          />
+          <TextWithWrapper
+            text={item.price}
+            flex={0.35}
+            textStyle={styles.priceText}
+            viewStyle={styles.priceTextView}
+          />
         </View>
       </ImageBackground>
     </TouchableOpacity>
@@ -47,7 +49,6 @@ export function HorizontalCard({item}) {
  * Rounded Card
  * @author Himanshu Yadav
  * @description Rounded Card Component with icon and category text
- * Text is wrapped inside Views to wrap text content incase string is very long
  */
 export function RoundedView({item}) {
   return (
@@ -55,11 +56,12 @@ export function RoundedView({item}) {
       <View style={styles.roundedView}>
         <Image style={styles.roundedimage} source={item.image} />
       </View>
-      <View style={styles.roundedCardTextView}>
-        <Text numberOfLines={1} style={styles.roundedCategoryText}>
-          {item.categoryName}
-        </Text>
-      </View>
+      <TextWithWrapper
+        text={item.categoryName}
+        textStyle={styles.roundedCategoryText}
+        viewStyle={styles.roundedCardTextView}
+        flex={0}
+      />
     </TouchableOpacity>
   );
 }
@@ -68,7 +70,6 @@ export function RoundedView({item}) {
  * Featured Card
  * @author Himanshu Yadav
  * @description Featured Card Component with Image, name, location, review and ratings
- * Text is wrapped inside Views to wrap text content incase string is very long
  */
 export function FeaturedCard({item}) {
   const {title, distance, image, reviews, rating} = item;
@@ -77,12 +78,17 @@ export function FeaturedCard({item}) {
     <TouchableOpacity style={styles.featuredCard}>
       <Image source={image} style={styles.featuredCardImage} />
       <View style={styles.featuredCardInnerView}>
-        <View style={styles.featuredCardNameView}>
-          <Text style={styles.featuredCardNameText}>{title}</Text>
-        </View>
+        <TextWithWrapper
+          text={title}
+          textStyle={styles.featuredCardNameText}
+          viewStyle={styles.featuredCardNameView}
+        />
         <View style={styles.locationAndReviewView}>
           <Image source={Images.location} style={styles.locationImage} />
-          <Text style={styles.locationAndReviewText}>{locationAndReview}</Text>
+          <TextWithWrapper
+            text={locationAndReview}
+            textStyle={styles.locationAndReviewText}
+          />
         </View>
         <View style={styles.starsContainerView}>
           {Array(5)
@@ -108,7 +114,6 @@ export function FeaturedCard({item}) {
  * Header
  * @author Himanshu Yadav
  * @description Header Component with drawer navigation, search and notifIcon
- * Text is wrapped inside Views to wrap text content incase string is very long
  */
 export function Header({
   onHamburgerPress = () => {},
@@ -136,6 +141,22 @@ export function Header({
   );
 }
 
+/**
+ * Text Wrapper Component
+ * @author Himanshu Yadav
+ * @description Text Wrapper Component inside view to avoid overflowing of text from the parent view
+ */
+function TextWithWrapper({text, flex = 1, textStyle, viewStyle = {}}) {
+  const style = [viewStyle, {flexShrink: 1, flex: flex}];
+  return (
+    <View style={style}>
+      <Text numberOfLines={1} style={textStyle}>
+        {text}
+      </Text>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   //Card Container Styles
   horizontalCard: {
@@ -149,6 +170,7 @@ const styles = StyleSheet.create({
   roundedCard: {
     alignItems: 'center',
     marginHorizontal: 12,
+    width: circleSize,
   },
   featuredCard: {
     width: (width - 52) / 2,
@@ -201,6 +223,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 18,
+    marginTop: 10,
     marginBottom: 25,
   },
   starsContainerView: {
@@ -237,25 +260,19 @@ const styles = StyleSheet.create({
   },
   featuredCardNameView: {
     marginTop: 5,
-    flexShrink: 1,
   },
   roundedCardTextView: {
+    alignItems: 'center',
     marginTop: 8,
-    flexShrink: 1,
-  },
-  titleTextView: {
-    flex: 0.7,
-    flexShrink: 1,
   },
   priceTextView: {
     marginLeft: 10,
     alignItems: 'flex-end',
-    flex: 0.3,
-    flexShrink: 1,
   },
   //Text styles
   searchInput: {
-    padding: 12,
+    paddingVertical: Platform.OS === 'ios' ? 12 : 6,
+    paddingHorizontal: 12,
     marginHorizontal: 15,
     borderRadius: 20,
     flex: 1,

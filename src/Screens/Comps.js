@@ -20,9 +20,9 @@ const circleSize = (width - (12 + 5 * 24)) / 5;
  * @description Horizontal Card Component with image as background.
  * Texts are wrapped inside Views to wrap text content incase string is very long
  */
-export function HorizontalCard({item}) {
+export function HorizontalCard({item, onCardPress}) {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onCardPress}>
       <ImageBackground
         imageStyle={styles.horizontalImageStyle}
         source={item.image}

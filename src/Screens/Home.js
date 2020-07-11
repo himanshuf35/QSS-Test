@@ -2,8 +2,14 @@ import React, {useState} from 'react';
 import {StyleSheet, ScrollView, FlatList, View} from 'react-native';
 import {HorizontalCard, RoundedView, FeaturedCard, Header} from './Comps';
 import data from '../data';
+import {appStore} from '../../App';
+import {cardPress} from '../modules/Home/homeActions';
+// const {dispatch} = store;
 
 const Home = ({navigation}) => {
+  const {
+    store: {dispatch},
+  } = require('../../App');
   const {horizontalData, categoriesData, featuredData} = data;
   const [filteredData, setFilteredData] = useState(featuredData);
   const onChangeText = (text) => {
@@ -46,7 +52,14 @@ const Home = ({navigation}) => {
           data={horizontalData}
           showsHorizontalScrollIndicator={false}
           horizontal
-          renderItem={({item}) => <HorizontalCard item={item} />}
+          renderItem={({item}) => (
+            <HorizontalCard
+              item={item}
+              onCardPress={() => {
+                dispatch(cardPress(item));
+              }}
+            />
+          )}
           keyExtractor={(item, index) => {
             return item + index;
           }}

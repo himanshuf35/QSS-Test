@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,8 +10,33 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
-
+import {createStore, combineReducers} from 'redux';
+import Notification from './src/Screens/Notification';
+import homeReducer from './src/modules/Home/homeReducer';
+import notifReducer from './src/modules/Notifications/notifReducer';
 import Home from './src/Screens/Home';
+
+function logger({getState}) {
+  return (next) => (action) => {
+    console.log('will dispatch', action);
+
+    // Call the next dispatch method in the middleware chain.
+    const returnValue = next(action);
+
+    console.log('state after dispatch', getState());
+
+    // This will likely be the action itself, unless
+    // a middleware further in chain changed it.
+    return returnValue;
+  };
+}
+
+const rootReducer = combineReducers({
+  homeObj: homeReducer,
+  notifObj: notifReducer,
+});
+
+export const store = createStore(rootReducer);
 
 const toggleDrawer = (navigation) => {
   navigation.toggleDrawer();
@@ -34,7 +59,7 @@ function TestStack() {
   return (
     <Stack.Navigator headerMode="none">
       <Stack.Screen name="DrawerNavigator" component={TestDrawer} />
-      <Stack.Screen name="Screen2" component={NotifScreen} />
+      <Stack.Screen name="Screen2" component={Notification} />
     </Stack.Navigator>
   );
 }
@@ -66,6 +91,11 @@ function getDummyScreen(screenName, buttonText, onButtonPress) {
 }
 
 const App: () => React$Node = () => {
+  useEffect(() => {
+    return store.subscribe(() => {
+      // console.log('global state', store.getState());
+    });
+  });
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -94,5 +124,4 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 });
-
 export default App;

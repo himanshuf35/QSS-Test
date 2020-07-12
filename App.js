@@ -10,23 +10,35 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
-import {createStore, combineReducers} from 'redux';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
 import Notification from './src/Screens/Notification';
 import homeReducer from './src/modules/Home/homeReducer';
 import notifReducer from './src/modules/Notifications/notifReducer';
 import Home from './src/Screens/Home';
 
+function typeChecker() {
+  return (next) => (action) => {
+    console.log('Action Type', action.type);
+    const returnValue = next(action);
+    return returnValue;
+  };
+}
+
+function thunkMiddleware({getState, dispatch}) {
+  return (next) => (action) => {
+    if (typeof action === 'function') {
+      return action(dispatch, getState);
+    } else {
+      return next(action);
+    }
+  };
+}
+
 function logger({getState}) {
   return (next) => (action) => {
     console.log('will dispatch', action);
-
-    // Call the next dispatch method in the middleware chain.
     const returnValue = next(action);
-
     console.log('state after dispatch', getState());
-
-    // This will likely be the action itself, unless
-    // a middleware further in chain changed it.
     return returnValue;
   };
 }
@@ -36,7 +48,11 @@ const rootReducer = combineReducers({
   notifObj: notifReducer,
 });
 
-export const store = createStore(rootReducer);
+export const store = createStore(
+  rootReducer,
+  undefined,
+  applyMiddleware(thunkMiddleware, typeChecker, logger),
+);
 
 const toggleDrawer = (navigation) => {
   navigation.toggleDrawer();
@@ -93,7 +109,7 @@ function getDummyScreen(screenName, buttonText, onButtonPress) {
 const App: () => React$Node = () => {
   useEffect(() => {
     return store.subscribe(() => {
-      // console.log('global state', store.getState());
+      console.log('global state', store.getState());
     });
   });
   return (
@@ -116,12 +132,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  navigateText: {
-    fontSize: 16,
-    marginTop: 10,
-    color: '#4ca2ed',
-    fontWeight: '500',
   },
 });
 export default App;

@@ -12,6 +12,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import Notification from './src/Screens/Notification';
+import DrawerScreen from './src/Screens/DrawerScreen';
 import homeReducer from './src/modules/Home/homeReducer';
 import notifReducer from './src/modules/Notifications/notifReducer';
 import Home from './src/Screens/Home';
@@ -24,6 +25,7 @@ function typeChecker() {
   };
 }
 
+//Below is the implementation of thunk Middleware
 function thunkMiddleware({getState, dispatch}) {
   return (next) => (action) => {
     if (typeof action === 'function') {
@@ -64,12 +66,12 @@ const goBack = (navigation) => {
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
-const DrawerScreen = getDummyScreen(
-  'Drawer Menu Screen',
-  'ToggleDrawer',
-  toggleDrawer,
-);
-const NotifScreen = getDummyScreen('Notification Screen', 'Go Back', goBack);
+// const DrawerScreen = getDummyScreen(
+//   'Drawer Menu Screen',
+//   'ToggleDrawer',
+//   toggleDrawer,
+// );
+// const NotifScreen = getDummyScreen('Notification Screen', 'Go Back', goBack);
 
 function TestStack() {
   return (
